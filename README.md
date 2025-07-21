@@ -1,0 +1,29 @@
+# AANetworkMonitor
+
+[![CI Status](https://img.shields.io/travis/AaronFeng/AANetworkMonitor.svg?style=flat)](https://travis-ci.org/AaronFeng/AANetworkMonitor)
+[![Version](https://img.shields.io/cocoapods/v/AANetworkMonitor.svg?style=flat)](https://cocoapods.org/pods/AANetworkMonitor)
+[![License](https://img.shields.io/cocoapods/l/AANetworkMonitor.svg?style=flat)](https://cocoapods.org/pods/AANetworkMonitor)
+[![Platform](https://img.shields.io/cocoapods/p/AANetworkMonitor.svg?style=flat)](https://cocoapods.org/pods/AANetworkMonitor)
+
+## Example
+
+To run the example project, clone the repo, and run `pod install` from the Example directory first.
+
+## Requirements
+
+## Installation
+
+AANetworkMonitor is available through [CocoaPods](https://cocoapods.org). To install
+it, simply add the following line to your Podfile:
+
+```ruby
+pod 'AANetworkMonitor'
+```
+
+## Author
+
+AaronFeng, aaronfeng1993@163.com
+
+## License
+
+AANetworkMonitor is available under the MIT license. See the LICENSE file for more info.
