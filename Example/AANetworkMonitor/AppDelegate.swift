@@ -18,9 +18,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
+        AANetworkMonitor.setup()
+        
         let start = CACurrentMediaTime()
         let type = AANetworkMonitor.currentNetworkType()
         print("currentNetworkType: \(type.rawValue), interval: \(CACurrentMediaTime() - start) s.")
+        
+        NotificationCenter.default.addObserver(forName: AANetworkMonitor.AANetworkDidChangedNotification, object: nil, queue: nil) { notification in
+            guard let userinfo = notification.userInfo else { return }
+            print("AANetwork did changed, newValue: \(userinfo["newValue"] ?? ""), oldValue: \(userinfo["oldValue"] ?? "")")
+        }
+        
         
         return true
     }

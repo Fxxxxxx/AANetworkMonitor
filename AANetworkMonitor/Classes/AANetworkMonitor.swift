@@ -30,8 +30,22 @@ public final class AANetworkMonitor: NSObject {
     let queue = DispatchQueue(label: "com.queue.AANetworkMonitor")
     
     private let monitor = NWPathMonitor()
-    private var networkType: AANetworkType = .unknown
     private var path: NWPath?
+    
+    private var networkType: AANetworkType = .unknown {
+        didSet {
+            guard oldValue != networkType else {
+                return
+            }
+            let newValue = networkType
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: AANetworkMonitor.AANetworkDidChangedNotification, object: nil, userInfo: [
+                    "oldValue": oldValue.rawValue,
+                    "newValue": newValue.rawValue
+                ])
+            }
+        }
+    }
     
     private override init() {
         super.init()
@@ -76,6 +90,15 @@ public final class AANetworkMonitor: NSObject {
 
 @available(iOS 12.0, *)
 public extension AANetworkMonitor {
+    
+    /// 网络类型更新通知
+    static let AANetworkDidChangedNotification: Notification.Name = .init(rawValue: "AANetworkDidChangedNotification")
+    
+    /// 初始化方法，在尽早时机调用
+    /// 初始化后，网络类型异步回调，过早获取可能得到 .unknown
+    static func setup() {
+        _ = self.shared
+    }
     
     /// 当前网络类型
     static func currentNetworkType() -> AANetworkType {
