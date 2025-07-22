@@ -39,7 +39,7 @@ public final class AANetworkMonitor: NSObject {
             }
             let newValue = networkType
             DispatchQueue.main.async {
-                NotificationCenter.default.post(name: AANetworkMonitor.AANetworkDidChangedNotification, object: nil, userInfo: [
+                NotificationCenter.default.post(name: .AANetworkTypeDidChangedNotification, object: nil, userInfo: [
                     "oldValue": oldValue.rawValue,
                     "newValue": newValue.rawValue
                 ])
@@ -91,9 +91,6 @@ public final class AANetworkMonitor: NSObject {
 @available(iOS 12.0, *)
 public extension AANetworkMonitor {
     
-    /// 网络类型更新通知
-    static let AANetworkDidChangedNotification: Notification.Name = .init(rawValue: "AANetworkDidChangedNotification")
-    
     /// 初始化方法，在尽早时机调用
     /// 初始化后，网络类型异步回调，过早获取可能得到 .unknown
     static func setup() {
@@ -114,4 +111,9 @@ public extension AANetworkMonitor {
         return currentNetworkType() != .offline
     }
     
+}
+
+public extension Notification.Name {
+    /// 网络类型更新通知
+    static let AANetworkTypeDidChangedNotification: Notification.Name = .init(rawValue: "AANetworkTypeDidChangedNotification")
 }

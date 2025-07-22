@@ -9,7 +9,7 @@ import Foundation
 import CoreTelephony
 
 @available(iOS 12.0, *)
-class AANetworkInfo {
+final class AANetworkInfo {
     
     static let shared = AANetworkInfo()
     let ctNetworkInfo = CTTelephonyNetworkInfo()

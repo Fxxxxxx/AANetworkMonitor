@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let type = AANetworkMonitor.currentNetworkType()
         print("currentNetworkType: \(type.rawValue), interval: \(CACurrentMediaTime() - start) s.")
         
-        NotificationCenter.default.addObserver(forName: AANetworkMonitor.AANetworkDidChangedNotification, object: nil, queue: nil) { notification in
+        NotificationCenter.default.addObserver(forName: .AANetworkTypeDidChangedNotification, object: nil, queue: nil) { notification in
             guard let userinfo = notification.userInfo else { return }
             print("AANetwork did changed, newValue: \(userinfo["newValue"] ?? ""), oldValue: \(userinfo["oldValue"] ?? "")")
         }
