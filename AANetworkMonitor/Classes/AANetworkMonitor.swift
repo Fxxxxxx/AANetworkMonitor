@@ -7,6 +7,7 @@
 
 import Foundation
 import Network
+import CoreTelephony
 
 public enum AANetworkType: String {
     case unknown = "unknown"
@@ -76,5 +77,13 @@ public final class AANetworkMonitor: NSObject {
         }
         self.networkType = .unknown
     }
+    
+}
+
+/// CTTelephonyNetworkInfo
+@available(iOS 12.0, *)
+extension AANetworkMonitor {
+    
+    private static let networkInfo = CTTelephonyNetworkInfo()
     
 }
