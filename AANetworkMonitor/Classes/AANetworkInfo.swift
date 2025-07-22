@@ -39,6 +39,13 @@ final class AANetworkInfo {
             radioAccess = ra
         }
         
+        if #available(iOS 14.1, *) {
+            if radioAccess == CTRadioAccessTechnologyNRNSA
+                || radioAccess == CTRadioAccessTechnologyNR {
+                return .cellular5G
+            }
+        }
+        
         switch radioAccess {
         case CTRadioAccessTechnologyGPRS,
             CTRadioAccessTechnologyEdge,
