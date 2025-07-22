@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AANetworkMonitor
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +17,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        let start = CACurrentMediaTime()
+        let type = AANetworkMonitor.currentNetworkType()
+        print("currentNetworkType: \(type.rawValue), interval: \(CACurrentMediaTime() - start) s.")
+        
         return true
     }
 

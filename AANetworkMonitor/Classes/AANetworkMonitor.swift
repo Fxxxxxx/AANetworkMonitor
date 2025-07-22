@@ -15,6 +15,7 @@ public enum AANetworkType: String {
     case wifi = "wifi"
     case loopback = "loopback"
     case wiredEthernet = "wiredEthernet"
+    case cellular = "cellular"
     case cellular2G = "cellular2G"
     case cellular3G = "cellular3G"
     case cellular4G = "cellular4G"
@@ -25,32 +26,25 @@ public enum AANetworkType: String {
 @objcMembers
 public final class AANetworkMonitor: NSObject {
     
-    public let shared = AANetworkMonitor()
+    static let shared = AANetworkMonitor()
+    let queue = DispatchQueue(label: "com.queue.AANetworkMonitor")
     
     private let monitor = NWPathMonitor()
     private var networkType: AANetworkType = .unknown
-    private let queue = DispatchQueue(label: "com.queue.AANetworkMonitor")
-    private let specifedKey = DispatchSpecificKey<AANetworkMonitor>()
+    private var path: NWPath?
     
     private override init() {
         super.init()
-        queue.setSpecific(key: self.specifedKey, value: self)
-        
         self.monitor.pathUpdateHandler = { [weak self] newPath in
-            self?.handle(path: newPath)
+            self?.path = newPath
+            self?.update()
         }
         self.monitor.start(queue: self.queue)
+        self.path = self.monitor.currentPath
     }
     
-    private func runInQueue(_ block: @escaping () -> Void) {
-        guard let speccifed = DispatchQueue.getSpecific(key: self.specifedKey), speccifed == self else {
-            block()
-            return
-        }
-        self.queue.async(execute: block)
-    }
-    
-    private func handle(path: NWPath) {
+    func update() {
+        guard let path = self.path else { return }
         guard path.status == .satisfied else {
             self.networkType = .offline
             return
@@ -71,8 +65,8 @@ public final class AANetworkMonitor: NSObject {
             self.networkType = .wiredEthernet
             return
         }
-        /// todo: cellular
         if path.usesInterfaceType(.cellular) {
+            self.networkType = AANetworkInfo.shared.getCellularDatail()
             return
         }
         self.networkType = .unknown
@@ -80,10 +74,21 @@ public final class AANetworkMonitor: NSObject {
     
 }
 
-/// CTTelephonyNetworkInfo
 @available(iOS 12.0, *)
-extension AANetworkMonitor {
+public extension AANetworkMonitor {
     
-    private static let networkInfo = CTTelephonyNetworkInfo()
+    /// 当前网络类型
+    static func currentNetworkType() -> AANetworkType {
+        var type: AANetworkType = .unknown
+        self.shared.queue.sync {
+            type = self.shared.networkType
+        }
+        return type
+    }
+    
+    /// 网络是否可用
+    static func isAvaliable() -> Bool {
+        return currentNetworkType() != .offline
+    }
     
 }
