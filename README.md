@@ -1,6 +1,6 @@
 # iOS网络类型识别，还在使用过时的Reachability？试试最新的NWPathMonitor！
 
-##背景
+## 背景
 网络识别能力是APP开发过程中不可或缺的重要能力，早期iOS识别网络类型，主要是通过[Reachability](https://developer.apple.com/library/archive/samplecode/Reachability/Introduction/Intro.html)实现，但是System Configuration相关的API在iOS 17.4及之后版本被Apple官方标记废弃了，取而代之的是NWPathMonitor，本文主要介绍相关的用法，并提供相关的代码封装供直接使用。
 
 ## NWPathMonitor用法
