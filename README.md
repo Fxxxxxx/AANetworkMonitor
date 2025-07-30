@@ -141,7 +141,7 @@ NotificationCenter.default.addObserver(forName: .AANetworkTypeDidChangedNotifica
 ##写在最后
 > 欢迎直接使用代码，欢迎留言沟通交流！如果您觉得当前代码对您有帮助，欢迎打赏鼓励👏🏻
 
-![WechatIMG1.jpg](https://upload-images.jianshu.io/upload_images/3569202-6de026dccfefd817.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![251753860041_.pic.jpg](https://upload-images.jianshu.io/upload_images/3569202-a4412bacd07ff616.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
 ## License
