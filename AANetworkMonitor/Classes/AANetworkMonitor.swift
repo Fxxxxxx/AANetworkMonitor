@@ -9,7 +9,7 @@ import Foundation
 import Network
 import CoreTelephony
 
-public enum AANetworkType: String {
+public enum AANetworkType: String, Sendable {
     case unknown = "unknown"
     case offline = "offline"
     case wifi = "wifi"
@@ -24,25 +24,26 @@ public enum AANetworkType: String {
 
 @available(iOS 12.0, *)
 @objcMembers
-public final class AANetworkMonitor: NSObject {
+public final class AANetworkMonitor: NSObject, Sendable {
     
     static let shared = AANetworkMonitor()
     let queue = DispatchQueue(label: "com.queue.AANetworkMonitor")
     
     private let monitor = NWPathMonitor()
-    private var path: NWPath?
+    nonisolated(unsafe) private var path: NWPath?
     
-    private var networkType: AANetworkType = .unknown {
+    nonisolated(unsafe) private var networkType: AANetworkType = .unknown {
         didSet {
             guard oldValue != networkType else {
                 return
             }
             let newValue = networkType
+            let userInfo = [
+                "oldValue": oldValue.rawValue,
+                "newValue": newValue.rawValue
+            ]
             DispatchQueue.main.async {
-                NotificationCenter.default.post(name: .AANetworkTypeDidChangedNotification, object: nil, userInfo: [
-                    "oldValue": oldValue.rawValue,
-                    "newValue": newValue.rawValue
-                ])
+                NotificationCenter.default.post(name: .AANetworkTypeDidChangedNotification, object: nil, userInfo: userInfo)
             }
         }
     }
@@ -80,7 +81,7 @@ public final class AANetworkMonitor: NSObject {
             return
         }
         if path.usesInterfaceType(.cellular) {
-            self.networkType = AANetworkInfo.shared.getCellularDatail()
+            self.networkType = AACellularManager.shared.getCellularDatail()
             return
         }
         self.networkType = .unknown
